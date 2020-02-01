@@ -146,7 +146,7 @@ Their work was very inspiring and allowed me to learn and above all helped me a 
 * You may need to adapt the playbooks and scripts from this project to create your own cluster
 * The way I do it's simple, I open a terminal to run scripts and playbooks, at the same time I open the project in an IDE and adapt the code of the project when necessary
 * To save time in problem analysis, you can add to each ansible command the --vvv option, which allows you to have verbose mode
-* I am trying to see how to create unit tests of project playbooks, in the same way that I create unit tests for projects in Java or Python, [Test strategies](https://docs.ansible.com/ansible/latest/reference_appendices/test_strategies.html#integrating-testing-with-ansible-playbooks)
+* I am trying to see how to create unit tests of project playbooks, in the same way that I create unit tests for projects in Java or Python **TODO**
 
 
 ## Hardware
