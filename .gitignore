@@ -6,3 +6,10 @@
 .Trashes
 ehthumbs.db
 Thumbs.db
+# Selected files
+config.yml
+hosts
+/run/.keep
+/run/admin.conf
+/run/kubeadm-token.txt
+/run/pi-cluster.cfg
