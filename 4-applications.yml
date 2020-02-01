@@ -1,0 +1,12 @@
+---
+- name: /Rock/4-applications.yml -> Applications deployment on master
+
+  hosts: master
+  remote_user: pi
+  become: true
+  any_errors_fatal: true
+
+  roles:
+  - role: applications
+
+

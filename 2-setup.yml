@@ -1,0 +1,14 @@
+---
+- name: /Rock/2-setup.yml -> Setup Raspberry Pi base system
+
+  hosts: pis
+  gather_facts: yes
+  remote_user: pirate
+  become: true
+  become_method: sudo
+
+  vars_files:
+    - config.yml
+
+  roles:
+    - base

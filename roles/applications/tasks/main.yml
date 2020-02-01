@@ -1,0 +1,28 @@
+---
+- name: /Rokc/roles/applications/tasks/main.yml -> Create temp directory for doing work in
+  command: mktemp -d /tmp/k8s-ansible-XXXXXX
+  register: mktemp
+  changed_when: False
+  check_mode: no
+
+- name: /Rokc/roles/applications/tasks/main.yml -> Install Dashboard
+  include_tasks: install_k8s_resource.yml
+  vars:
+    name: dashboard
+
+- name: /Rokc/roles/applications/tasks/main.yml -> Install Heapster
+  include_tasks: install_k8s_resource.yml
+  vars:
+    name: heapster
+
+- name: /Rokc/roles/applications/tasks/main.yml -> Install Traefik
+  include_tasks: install_k8s_resource.yml
+  vars:
+    name: traefik
+
+- name: /Rokc/roles/applications/tasks/main.yml -> Delete temp directory
+  file:
+    name: "{{ mktemp.stdout }}"
+    state: absent
+  changed_when: False
+  check_mode: no

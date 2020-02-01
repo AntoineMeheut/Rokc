@@ -1,0 +1,12 @@
+- name: /Rokc/roles/openshift/tasks/main.yml -> Disable and stop kubelet service
+  service: name=kubelet enabled=false state=stopped
+
+- name: Install OpenShift
+  include_tasks: install_binaries.yml
+  vars:
+    binaries:
+      name: openshift-origin
+      version: "{{ version.openshift }}"
+      commands:
+        - oc
+        - openshift

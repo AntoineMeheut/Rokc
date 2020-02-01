@@ -1,0 +1,69 @@
+# This is not needed for pure Kubernetes use as Kubernetes does not support
+# swap. See also the discussion in https://github.com/kubernetes/kubernetes/issues/7294
+# I keep the file here nevertheless as reference, but its nowhere included for now
+
+# Tasks taken directly from http://stackoverflow.com/questions/24765930/add-swap-memory-with-ansible
+# Usage:
+#
+# - name: Add Swapfile
+#  include: swap.yml
+#  vars:
+#    swap_file_path: "/swapfile"
+#    swap_file_size: "1G"
+
+- name: /Rokc/roles/base/tasks/swap.yml -> Set swap_file variable
+  set_fact:
+    swap_file: "{{ swap_file_path }}"
+  tags:
+    - swap.set.file.path
+
+- name: /Rokc/roles/base/tasks/swap.yml -> Check if swap file exists
+  stat:
+    path: "{{swap_file}}"
+  register: swap_file_check
+  tags:
+    - swap.file.check
+
+- name: /Rokc/roles/base/tasks/swap.yml -> Create swap file
+  command: fallocate -l {{ swap_file_size }} {{swap_file}}
+  when: not swap_file_check.stat.exists
+  tags:
+    - swap.file.create
+
+- name: /Rokc/roles/base/tasks/swap.yml -> Change swap file permissions
+  file: path="{{swap_file}}"
+        owner=root
+        group=root
+        mode=0600
+  tags:
+    - swap.file.permissions
+
+- name: /Rokc/roles/base/tasks/swap.yml -> Format swap file
+  command: "mkswap {{swap_file}}"
+  when: not swap_file_check.stat.exists
+  tags:
+    - swap.file.mkswap
+
+- name: /Rokc/roles/base/tasks/swap.yml -> Write swap entry in fstab
+  mount: name=none
+         src={{swap_file}}
+         fstype=swap
+         opts=sw
+         passno=0
+         dump=0
+         state=present
+  tags:
+    - swap.fstab
+
+- name: /Rokc/roles/base/tasks/swap.yml -> Turn on swap
+  command: swapon -a
+  when: not swap_file_check.stat.exists
+  tags:
+    - swap.turn.on
+
+- name: /Rokc/roles/base/tasks/swap.yml -> Set swappiness
+  sysctl:
+    name: vm.swappiness
+    value: "1"
+  tags:
+    - swap.set.swappiness

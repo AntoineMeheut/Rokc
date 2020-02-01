@@ -1,0 +1,34 @@
+- name: /Rokc/roles/kubernetes/tasks/docker.yml -> Pin Docker to version {{ docker.version }}
+  template: src=docker-apt-pin.txt dest=/etc/apt/preferences.d/docker
+
+- name: /Rokc/roles/kubernetes/tasks/docker.yml -> Downgrade docker
+  apt:
+    state: present
+    install_recommends: no
+    name: docker-engine={{ docker.version }}
+    autoremove: yes
+    force: yes
+
+- name: /Rokc/roles/kubernetes/tasks/docker.yml -> Prepare docker expose args for service
+  set_fact:
+    dockerd_extra_args: "{{ ', \"hosts\": [ \"fd://\", \"tcp://0.0.0.0:2375\"]' if docker.expose_tcp else '' }}"
+
+- name: /Rokc/roles/kubernetes/tasks/docker.yml -> Replace the startup command for Docker
+  lineinfile: 
+    dest: /lib/systemd/system/docker.service
+    regexp: '^ExecStart'
+    line: 'ExecStart=/usr/bin/dockerd'
+    state: present
+  register: result_service
+  
+- name: /Rokc/roles/kubernetes/tasks/docker.yml -> Update docker service startup
+  template: src=docker_daemon.json dest=/etc/docker/daemon.json
+  register: result
+  notify:
+    - /Rock/roles/kubernetes/handlers/main.yml -> Restart docker
+
+- name: /Rokc/roles/kubernetes/tasks/docker.yml -> Reload systemd when service definition changed
+  command: systemctl daemon-reload
+
+- name: /Rokc/roles/kubernetes/tasks/docker.yml -> Notify Docker service right now to restart
+  meta: flush_handlers

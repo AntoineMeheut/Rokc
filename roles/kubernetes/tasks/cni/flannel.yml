@@ -1,0 +1,10 @@
+# Please note, this is still work in progress
+# Especially saving of the iptables rules needs to be fixed
+ 
+- name: /Rock/roles/base/kubernetes/tasks/cni/flannel.yml -> Create flannel resources
+  template: src=cni/flannel.yml dest=/etc/kubernetes/kube-flannel.yml
+
+- name: /Rock/roles/base/kubernetes/tasks/cni/flannel.yml -> Create flannel resources
+  environment:
+    KUBECONFIG: /etc/kubernetes/admin.conf
+  command: kubectl create -f /etc/kubernetes/kube-flannel.yml

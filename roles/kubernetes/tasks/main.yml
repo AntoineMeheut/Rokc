@@ -1,0 +1,21 @@
+---
+- name: /Rokc/roles/kubernetes/tasks/main.yml -> Add and update packages
+  include_tasks: apt.yml
+
+- name: /Rokc/roles/kubernetes/tasks/main.yml -> Update Docker
+  include_tasks: docker.yml
+
+- name: /Rokc/roles/kubernetes/tasks/main.yml -> Fix iptable rules
+  include_tasks: iptables.yml
+  
+- name: /Rokc/roles/kubernetes/tasks/main.yml -> Create dir ~/.kube
+  file: path=/home/pi/.kube state=directory owner=pi group=users mode=0775
+
+- name: /Rokc/roles/kubernetes/tasks/main.yml -> Create dir /etc/kubernetes/apps
+  file: path=/etc/kubernetes/apps state=directory mode=0775
+
+- name: /Rokc/roles/kubernetes/tasks/main.yml -> Setup profile
+  template: src=kubernetes_profile.sh dest=/etc/profile.d/kubernetes.sh mode=0644
+
+- name: /Rokc/roles/kubernetes/tasks/main.yml -> Install with kubeadm
+  include_tasks: kubeadm.yml

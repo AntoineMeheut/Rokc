@@ -1,0 +1,25 @@
+- name: /Rokc/roles/kubernetes/tasks/iptables.yml -> Install iptables support package
+  apt:
+    name: iptables-persistent
+    install_recommends: no
+    force: yes
+    state: present
+
+- name: /Rokc/roles/kubernetes/tasks/iptables.yml -> Get iptables rules
+  shell: iptables -L
+  register: iptablesrules
+  check_mode: no
+ 
+- block:
+   
+  - name: /Rokc/roles/kubernetes/tasks/iptables.yml -> Add FORWARD ACCEPT for cni0 (in)
+    command: /sbin/iptables -A FORWARD -i cni0 -j ACCEPT -m comment --comment "CNI-Forward-Fix"
+
+  - name: /Rokc/roles/kubernetes/tasks/iptables.yml -> Add FORWARD ACCEPT for cni0 (out)
+    command: /sbin/iptables -A FORWARD -o cni0 -j ACCEPT -m comment --comment "CNI-Forward-Fix"
+
+  - name: /Rokc/roles/kubernetes/tasks/iptables.yml -> Save iptables
+    shell: iptables-save > /etc/iptables/rules.v4
+
+  when: iptablesrules.stdout.find("CNI-Forward-Fix") == -1
+ 

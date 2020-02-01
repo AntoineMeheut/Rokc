@@ -1,0 +1,17 @@
+
+- name: /Rokc/roles/applications/tasks/install_k8s_resource.yml -> Copy {{ name }}.yml to /etc/kubernetes/apps/
+  template: src={{ name }}.yml dest=/etc/kubernetes/apps/{{ name }}.yml
+
+- name: /Rokc/roles/applications/tasks/install_k8s_resource.yml -> Delete resources for  {{ name }} (if existing)
+  delegate_to: "{{ groups.master | first }}"
+  command: kubectl delete -f /etc/kubernetes/apps/{{ name }}.yml
+  ignore_errors: true
+
+- name: /Rokc/roles/applications/tasks/install_k8s_resource.yml -> Install resources for {{ name }}
+  delegate_to: "{{ groups.master | first }}"
+  command: kubectl create -f /etc/kubernetes/apps/{{ name }}.yml
+
+- name: /Rokc/roles/applications/tasks/install_k8s_resource.yml -> Label traefik Master
+  delegate_to: "{{ groups.master | first }}"
+  command: kubectl label node n0 nginx-controller=traefik
+  when: name == "traefik"

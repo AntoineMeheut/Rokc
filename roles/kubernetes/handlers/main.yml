@@ -1,0 +1,5 @@
+- name: /Rock/roles/kubernetes/handlers/main.yml -> Restart docker
+  service: name=docker enabled=yes state=restarted
+
+- name: /Rock/roles/kubernetes/handlers/main.yml -> Restart kubelet
+  service: name=kubelet enabled=yes state=restarted

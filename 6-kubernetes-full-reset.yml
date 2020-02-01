@@ -1,0 +1,20 @@
+---
+- name: /Rock/6-kubernetes-full-reset.yml -> Kubernetes full reset on master
+
+  hosts: master
+  remote_user: pi
+  become: true
+
+  roles:
+  - role: kubernetes-full-reset
+    mode: master
+
+- name: /Rock/5-kubernetes-full-reset.yml -> Kubernetes full reset on nodes
+
+  hosts: nodes
+  remote_user: pi
+  become: true
+
+  roles:
+  - role: kubernetes-full-reset
+    mode: node

@@ -1,0 +1,11 @@
+---
+# You timezone
+timezone: "Europe/Paris"
+
+# Default values
+network:
+  service_subnet: 192.168.1.0/24
+  pod_subnet : 192.1.0.0/16
+images:
+  flannel: quay.io/coreos/flannel-git:v0.6.1-28-g5dde68d-arm
+debug_level: 2

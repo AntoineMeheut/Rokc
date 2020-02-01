@@ -1,0 +1,54 @@
+- name: /Rokc/roles/kubernetes/tasks/master.yml -> Copy init file for kubeadm
+  template: src=kubeadm.yml dest=/etc/kubernetes/kubeadm.yml mode=0755
+
+- name: /Rokc/roles/kubernetes/tasks/master.yml -> Clean up /var/lib/kubelet/
+  file: path=/var/lib/kubelet/pki state=absent
+
+- name: /Rokc/roles/kubernetes/tasks/master.yml -> Run kubeadm init on master
+  command: kubeadm init --config /etc/kubernetes/kubeadm.yml --ignore-preflight-errors=CRI
+  register: kubeadm_init
+
+- name: /Rokc/roles/kubernetes/tasks/master.yml -> Create a dedicated token from master
+  command: kubeadm token create --ttl 0 --groups system:bootstrappers:kubeadm:default-node-token --description "Bootstrap token which does not expire"
+  register: kubeadm_gen_token
+
+- name: /Rokc/roles/kubernetes/tasks/master.yml -> Copy token to local file 'kubernetes-token'
+  become: no
+  copy: content={{ kubeadm_gen_token.stdout }} dest={{ playbook_dir }}/run/kubeadm-token.txt
+  delegate_to: localhost
+
+- name: /Rokc/roles/kubernetes/tasks/master.yml -> Register token as fact
+  set_fact:
+    kubeadm_token: "{{ lookup('file', playbook_dir + '/run/kubeadm-token.txt') }}"
+
+- name: /Rokc/roles/kubernetes/tasks/master.yml -> Copy Kubernetes access config to ~/.kube/config on nodes
+  copy: remote_src=True src=/etc/kubernetes/admin.conf dest=/home/pi/.kube/config owner=pi group=pi
+
+# - debug: var=kubeadm_init.stdout
+
+- name: /Rokc/roles/kubernetes/tasks/master.yml -> Download cluster configuration
+  fetch:
+    src: "/etc/kubernetes/admin.conf"
+    dest: "{{ playbook_dir }}/run/"
+    flat: true
+
+- name: /Rokc/roles/kubernetes/tasks/master.yml -> Ensure ~/.kube directory
+  file: path=~/.kube state=directory
+
+#default kubectl location for cli client
+- name: /Rokc/roles/kubernetes/tasks/master.yml -> Configure master for kubectl
+  command: cp /etc/kubernetes/admin.conf ~/.kube/config
+
+- name: /Rokc/roles/kubernetes/tasks/master.yml -> Rename cluster configuration
+  become: no
+  command: mv {{ playbook_dir }}/run/admin.conf {{ playbook_dir }}/run/pi-cluster.cfg
+  delegate_to: localhost
+
+- name: /Rokc/roles/kubernetes/tasks/master.yml -> Install CNI plugin for {{ overlay_network }}
+  include_tasks: cni/{{ overlay_network }}.yml
+
+- name: /Rokc/roles/kubernetes/tasks/master.yml -> Download cluster configuration
+  fetch:
+    src: "/etc/kubernetes/admin.conf"
+    dest: "{{ playbook_dir }}/run/"
+    flat: true

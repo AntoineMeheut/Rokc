@@ -1,0 +1,10 @@
+- name: /Rokc/roles/kubernetes/tasks/apt.yml -> Install Packages
+  apt:
+    pkg:
+    - kubelet={{ k8s.version }}
+    - kubeadm={{ k8s.version }}
+    - kubectl={{ k8s.version }}
+    - kubernetes-cni=0.6.*
+    install_recommends: no
+    force: yes
+    state: present

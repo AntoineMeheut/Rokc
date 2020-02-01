@@ -1,0 +1,21 @@
+- name: /Rokc/roles/remove-update/tasks/main.yml -> kubeadm reset
+  command: kubeadm reset
+
+- name: /Rokc/roles/remove-update/tasks/main.yml -> Reset data in etcd
+  command: etcdctl rm --recursive registry
+  when: mode == "master"
+
+- name: /Rokc/roles/remove-update/tasks/main.yml -> Remove /var/lib/cni
+  command: rm -rf /var/lib/cni
+
+- name: /Rokc/roles/remove-update/tasks/main.yml -> Remove /run/flannel
+  command: rm -rf /run/flannel
+
+- name: /Rokc/roles/remove-update/tasks/main.yml -> Remove /etc/cni
+  command: rm -rf /etc/cni
+
+- name: /Rokc/roles/remove-update/tasks/main.yml -> Bring down cni0
+  comand: ifconfig cni0 down
+
+- name: /Rokc/roles/remove-update/tasks/main.yml -> Delete cni0
+  command: brctl delbr cni0

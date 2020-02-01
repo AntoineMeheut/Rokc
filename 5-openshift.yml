@@ -1,0 +1,23 @@
+---
+- name: /Rock/5-openshift.yml -> OpenShift deployment on master
+
+  hosts: master
+  remote_user: pirate
+  become: true
+
+  roles:
+  - role: openshift
+    mode: master
+    # "master" must be an IP, otherwise flannel will core dump:
+    master: 192.168.1.10
+
+- name: /Rock/4-openshift.yml -> OpenShift deployment on nodes
+
+  hosts: nodes
+  remote_user: pirate
+  become: true
+
+  roles:
+  - role: openshift
+    mode: node
+    master: 192.168.1.10

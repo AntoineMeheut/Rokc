@@ -1,0 +1,3 @@
+- name: /Rokc/roles/registry/tasks/main.yml -> Install registry on master
+  include: master.yml
+  when: mode == "master"

@@ -1,0 +1,13 @@
+---
+- name: /Rokc/roles/base/tasks/main.yml -> Add and update packages
+  include_tasks: apt.yml
+
+- name: /Rokc/roles/base/tasks/main.yml -> Setup system parameters (boot, hosts, timzone)
+  include_tasks: system.yml
+
+- name: /Rokc/roles/base/tasks/main.yml -> Configure Wifi
+  include_tasks: wifi.yml
+  when: wifi is defined
+
+- name: /Rokc/roles/base/tasks/main.yml -> Setup user
+  include_tasks: user.yml

@@ -1,0 +1,54 @@
+- name: /Rokc/roles/base/tasks/system.yml -> Setup profile
+  copy: src=docker_profile.sh dest=/etc/profile.d/docker.sh mode=0644
+
+- name: /Rokc/roles/base/tasks/system.yml -> Set timezone
+  timezone: name="{{ timezone }}"
+
+- name: /Rokc/roles/base/tasks/system.yml -> Update timezone
+  command: dpkg-reconfigure --frontend noninteractive tzdata
+
+- name: /Rokc/roles/base/tasks/system.yml -> Install locale
+  locale_gen:
+    name: en_US.UTF-8
+    state: present
+
+- name: /Rokc/roles/base/tasks/system.yml -> Set default locale
+  copy:
+    content: export LC_ALL=en_US.UTF-8\n
+    dest: /etc/profile.d/default_locale.sh
+    mode: 0755
+
+- name: /Rokc/roles/base/tasks/system.yml -> Add hosts
+  template: src=hosts dest=/etc/hosts
+
+- name: /Rokc/roles/base/tasks/system.yml -> Check DHCP hooks
+  stat: path=/etc/dhcp/dhclient-enter-hooks.d
+  register: dhclient_hooks
+
+- name: /Rokc/roles/base/tasks/system.yml -> Copy hosts to DHCP setup
+  template: src=hosts dest=/etc/dhcp
+  when: dhclient_hooks.stat.exists
+
+- name: /Rokc/roles/base/tasks/system.yml -> Add DHCP hook to copy etc hosts
+  copy: src=copy_hosts dest=/etc/dhcp/dhclient-enter-hooks.d/ mode=0755
+
+- name: /Rokc/roles/base/tasks/system.yml -> Set hostname
+  hostname: name="{{ name }}"
+
+  # Needed only for hypriot
+- stat: path=/boot/device-init.yaml
+  register: device_init_file
+- name: Set hostname in boot configuration
+  lineinfile:
+    dest: /boot/device-init.yaml
+    regexp: '^(.*hostname:)\s*(.*?)\s*$'
+    line: '\1 {{ name }}'
+    backrefs: true
+    state: present
+  when: device_init_file.stat.exists
+
+- name: /Rokc/roles/base/tasks/system.yml -> Add useDns=no to /etc/ssh/sshd_config
+  lineinfile: dest=/etc/ssh/sshd_config state=present line="UseDNS no" insertafter="EOF"
+
+- name: /Rock/roles/base/tasks/system.yml -> Restart hostname
+  shell: "hostnamectl set-hostname {{ name }}"

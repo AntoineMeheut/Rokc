@@ -1,0 +1,25 @@
+- name: /Rokc/roles/base/tasks/user.yml -> Add a group pi
+  group: name=pi
+
+- name: /Rokc/roles/base/tasks/user.yml -> Add a group docker
+  group: name=docker
+
+- name: /Rokc/roles/base/tasks/user.yml -> Add user pi to group docker
+  user: name=pi groups=docker,pi,video append=yes shell=/bin/bash
+
+- name: /Rokc/roles/base/tasks/user.yml -> Add pi to sudoers
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    line: "pi ALL=(ALL) NOPASSWD: ALL"
+    insertafter: "EOF"
+
+- name: /Rokc/roles/base/tasks/user.yml -> Verify ~/.ssh
+  file: path="/home/pi/.ssh" state=directory recurse=no owner=pi group=pi
+
+- name: /Rokc/roles/base/tasks/user.yml -> Copy SSH Key
+  copy: src="{{ ssh.pub_key_path }}" dest=/home/pi/.ssh/authorized_keys mode=0600 owner=pi group=pi
+
+- name: /Rokc/roles/base/tasks/user.yml -> Set user password
+  user: name=pi password="{{ user.password }}"
+  when: user is defined and user.password is defined
