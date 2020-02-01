@@ -38,7 +38,6 @@
   * [My goals](#My-goals)
   * [Features](#Features)
   * [Feedback](#Feedback)
-  * [Feedback](#Feedback)
   * [Experience sharing](#Experience-sharing)
 * [Hardware](#Hardware)
   * [Shopping list](#Shopping-list)
@@ -367,6 +366,9 @@ For testing we can do that.
 #### Access to Kuberbetes dashboard
 
 [http://localhost:8001/api/v1/namespaces/kube-system/services/kubernetes-dashboard/proxy/#!/node?namespace=default](http://localhost:8001/api/v1/namespaces/kube-system/services/kubernetes-dashboard/proxy/#!/node?namespace=default)
+
+#### Kubernetes dashboard
+![Dashboard](images/dashboard.png)
 
 ## Openshift installation **TODO** 
 
