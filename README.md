@@ -368,7 +368,7 @@ For testing we can do that.
 [http://localhost:8001/api/v1/namespaces/kube-system/services/kubernetes-dashboard/proxy/#!/node?namespace=default](http://localhost:8001/api/v1/namespaces/kube-system/services/kubernetes-dashboard/proxy/#!/node?namespace=default)
 
 #### Kubernetes dashboard
-![Dashboard](images/dashboard.png)
+![Dashboard](images/Dashboard.png)
 
 ## Openshift installation **TODO** 
 
