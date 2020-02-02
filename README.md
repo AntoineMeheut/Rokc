@@ -20,7 +20,7 @@
   <h3 align="center">Raspberry Openshift Kubernetes Cluster</h3>
 
   <p align="center">
-    The purpose of this project is to build a Kubernetes cluster on a couple of Raspberry Pi to run Openshift, deploy applications and work on security to improve my knowledge on the Sec of DevSecOps.
+    The purpose of this project is to build a Kubernetes cluster on a couple of Raspberry Pi to run Openshift, deploy applications and work on security to improve and share my knowledge on the Sec of DevSecOps.
     <br />
     <br />
     <a href="https://github.com/AntoineMeheut/Rokc/issues">Report Bug</a>
