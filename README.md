@@ -399,45 +399,16 @@ I use vmware fusion or docker provider for Vagrant, if you need informations on 
 	vagrant box add generic/centos7
 
 #### Startup Vagrant Developer VM **TODO**
-    cd origin
-    vagrant up --provider=docker
+
 
 #### Enter VM **TODO**
-    vagrant ssh
+
 
 #### Cross compile target **TODO**
-Temporily change the cross compile target platforms in `hack/commons.sh`. Change
 
-    readonly OS_CROSS_COMPILE_PLATFORMS=(
-      linux/amd64
-      darwin/amd64
-      windows/amd64
-      linux/386
-    )
-
-  to
-
-    readonly OS_CROSS_COMPILE_PLATFORMS=(
-      linux/arm
-    )
 
 #### Cross compile run **TODO**
-If `make build-cross` doesnt work use
 
-    sudo bash -x hack/build-cross.sh
-
-  The build will exit with an error because of some directories not setup correctly. The binaries has been successfully built, though.
-
-#### Get binaries **TODO**
-
-You then will find the cross compiled binaries in
-
-    ls -l _output/local/bin/linux/arm/
-    total 307744
-    -rwxr-xr-x  1 pirate  pi   51576136 Mar 27 11:33 oc
-    -rwxr-xr-x  1 pirate  pi  105987904 Mar 27 11:33 openshift
-
-  These binaries are also available outside of the VM since the build dir was mounted by Vagrant.
 
 ### Install Openshift on the cluster **TODO** 
 
