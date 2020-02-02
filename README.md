@@ -67,8 +67,9 @@
 	  * [Access to Kuberbetes dashboard](#Access-to-Kuberbetes-dashboard)
 * [Openshift installation](#Openshift-installation) **TODO**
   * [Compiling OpenShift for ARM](#Compiling-OpenShift-for-ARM) **TODO**
-	  * [Check out OpenShift Origin](#Check-out-OpenShift-Origin) **TODO**
-	  * [Select the version tag you want](#Select-the-version-tag-you-want) **TODO**
+	  * [Check out OpenShift Origin](#Check-out-OpenShift-Origin)
+	  * [Select the version tag you want](#Select-the-version-tag-you-want)
+	  * [Install Vagrant](#Install-Vagrant)
 	  * [Startup Vagrant Developer VM](#Startup-Vagrant-Developer-VM) **TODO**
 	  * [Enter VM](#Enter-VM) **TODO**
 	  * [Cross compile target](#Cross-compile-target) **TODO**
@@ -377,17 +378,29 @@ For testing we can do that.
 
 ### Compiling OpenShift for ARM **TODO**
 
-#### Check out OpenShift Origin **TODO**
+#### Check out OpenShift Origin
 	git clone https://github.com/openshift/origin
 
-#### Select the version tag you want **TODO**
-    git co v1.1.4
+#### Select the version tag you want
+	git checkout v3.11.0
 
   However, please note that the cross compile build only works on current master (because of [this](https://github.com/openshift/origin/commit/659ba8dadfeb25506a56da2f8a6bdc194ec4acc7) introduced lately). So the step above is probably best used when on v1.1.5 or later.
 
+#### Install Vagrant
+Vagrant works on Mac, Linux, Windows, and more. For Mac os x users use this [Vagrant](https://releases.hashicorp.com/vagrant/2.2.7/vagrant_2.2.7_x86_64.dmg)
+
+#### Install the Vagrant box for your provider **TODO**
+I use vmware fusion or docker provider for Vagrant, if you need informations on [Boxes & Providers setup](https://www.vagrantup.com/docs/providers/basic_usage.html). Here you can find the Vagrant boxes [catalogue](https://app.vagrantup.com/boxes/search). For a vmware fusion provider you could do this:
+
+	vagrant box add hashicorp/precise64
+	
+**Attention** : openshift require docker, hyperv or virtualbox, so you should do this:
+
+	vagrant box add generic/centos7
+
 #### Startup Vagrant Developer VM **TODO**
     cd origin
-    vagrant up
+    vagrant up --provider=docker
 
 #### Enter VM **TODO**
     vagrant ssh
