@@ -166,6 +166,9 @@ This cluster must be able to operate without a network other than the local loop
 | 5 | [Cat 6 Cables](https://www.startech.com/Cables/Network/Cat-6/#N6PATCH1BL) |
 | 1 | [PowerPort](https://www.anker.com/products/variant/powerport-5/A2124112) |
 | 1 | [Rpi Case Tower](https://www.reichelt.com/us/de/fr/fr/gehaeuse-fuer-raspberry-pi-4-tower-transparent-rpi-case-tr-19-p261681.html?r=1) |
+| 1 | [Router (for demo)](https://eu.dlink.com/fr/fr/for-home/routers-and-modems) |
+
+The router is not compulsory, it allows demonstrations outside your home.
 
 ### Why not Intel
 Below is a link to a more powerful configuration based on an Intel® architecture. I started with Raspberry I had already bought for other projects and I must admit that I had some problems because of the ARM architecture, some software that I use are often built in priority for Intel® type architectures.
