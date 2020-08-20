@@ -9,4 +9,3 @@
       version: "{{ version.openshift }}"
       commands:
         - oc
-        - openshift
