@@ -65,29 +65,12 @@
 	  * [Download Kubernetes dashboard](#Download-Kubernetes-dashboard)
 	  * [Launch the proxy for accessing the dashboard](#Launch-the-proxy-for-accessing-the-dashboard)
 	  * [Access to Kuberbetes dashboard](#Access-to-Kuberbetes-dashboard)
-* [Openshift installation](#Openshift-installation) **TODO**
-  * [Compiling OpenShift for ARM](#Compiling-OpenShift-for-ARM) **TODO**
+* [Openshift installation](#Openshift-installation)
+  * [Compiling OpenShift for ARM](#Compiling-OpenShift-for-ARM)
 	  * [Check out OpenShift Origin](#Check-out-OpenShift-Origin)
-	  * [Select the version tag you want](#Select-the-version-tag-you-want)
-	  * [Install Vagrant](#Install-Vagrant)
-	  * [Startup Vagrant Developer VM](#Startup-Vagrant-Developer-VM) **TODO**
-	  * [Enter VM](#Enter-VM) **TODO**
-	  * [Cross compile target](#Cross-compile-target) **TODO**
-	  * [Cross compile run](#Cross-compile-run) **TODO**
-	  * [Get binaries](#Get-binaries) **TODO**
-  * [Install Openshift on the cluster](#Install-Openshift-on-the-cluster) **TODO**
-  * [Use Openshift](#Use-Openshift) **TODO**
-* [Applications deployments](#Applications-deployments) **TODO**
-  * [Registry](#Registry) **TODO**
-  * [Who am I](#Who-am-I) **TODO**
-  * [MySQL](#MySQL) **TODO**
-  * [Other applications](#Other-applications) **TODO**
 * [Other scripts](#Other-scripts)
   * [Reboot your cluster](#Reboot-your-cluster)
   * [Halt your cluster](#Halt-your-cluster)
-* [DevSecOps](#DevSecOps) **TODO**
-	* [What is this](#What-is-this) **TODO**
-	* [How to do](#How-to-do) **TODO**
 * [Roadmap](#roadmap)
 * [Contributing](#contributing)
 * [License](#license)
@@ -115,7 +98,6 @@ Their work was very inspiring and allowed me to learn and above all helped me a 
 * Create an arm Openshift image
 * Install Kubernetes and Openshift with [Ansible](https://www.ansible.com/)
 * Deploy applications on this cluster
-* Start studying security, the famous Sec of DevSecOps
 * Being able to move this cluster, use it for demos and therefore : all works in environments where WiFi and network are not accessible to the cluster
 * Share my knowledge and recipes acquired
 
@@ -127,10 +109,7 @@ Their work was very inspiring and allowed me to learn and above all helped me a 
 * Use a bash script to prepare and start a running cluster with a few Ansible playbook
 * Install [Docker](https://www.docker.com/)
 * Install Kubernetes
-* Create an arm Openshift image **TODO**
-* Install Openshift **TODO**
-* Install applications **TODO**
-* Secure the DevOps process with best practices and tools **TODO**
+* Create an arm Openshift image **FAILED**
 * Cluster aware storage available out of the box using [GlusterFS](https://www.gluster.org/)
 * Dashboard and Heapster deployed by default along with [Traefik](https://containo.us/traefik/)
 
@@ -147,8 +126,6 @@ Their work was very inspiring and allowed me to learn and above all helped me a 
 * You may need to adapt the playbooks and scripts from this project to create your own cluster
 * The way I do it's simple, I open a terminal to run scripts and playbooks, at the same time I open the project in an IDE and adapt the code of the project when necessary
 * To save time in problem analysis, you can add to each ansible command the --vvv option, which allows you to have verbose mode
-* I am trying to see how to create unit tests of project playbooks, in the same way that I create unit tests for projects in Java or Python **TODO**
-
 
 ## Hardware
 ### Shopping list
@@ -374,9 +351,9 @@ For testing we can do that.
 #### Kubernetes dashboard
 ![Dashboard](images/Dashboard.png)
 
-## Openshift installation **TODO** 
+## Openshift installation
 
-### Compiling OpenShift for ARM **TODO**
+### Compiling OpenShift for ARM
 
 #### Check out OpenShift Origin
 	git clone https://github.com/openshift/origin
@@ -386,36 +363,7 @@ For testing we can do that.
 
   However, please note that the cross compile build only works on current master (because of [this](https://github.com/openshift/origin/commit/659ba8dadfeb25506a56da2f8a6bdc194ec4acc7) introduced lately). So the step above is probably best used when on v1.1.5 or later.
 
-#### Install Vagrant
-Vagrant works on Mac, Linux, Windows, and more. For Mac os x users use this [Vagrant](https://releases.hashicorp.com/vagrant/2.2.7/vagrant_2.2.7_x86_64.dmg)
-
-#### Install the Vagrant box for your provider **TODO**
-I use vmware fusion or docker provider for Vagrant, if you need informations on [Boxes & Providers setup](https://www.vagrantup.com/docs/providers/basic_usage.html). Here you can find the Vagrant boxes [catalogue](https://app.vagrantup.com/boxes/search). For a vmware fusion provider you could do this:
-
-	vagrant box add hashicorp/precise64
-	
-**Attention** : openshift require docker, hyperv or virtualbox, so you should do this:
-
-	vagrant box add generic/centos7
-
-#### Startup Vagrant Developer VM **TODO**
-
-
-#### Enter VM **TODO**
-
-
-#### Cross compile target **TODO**
-
-
-#### Cross compile run **TODO**
-
-
-### Install Openshift on the cluster **TODO** 
-
-    ansible-playbook -i hosts 5-openshift.yml
-
-### Use Openshift **TODO** 
-
+**Attention** : After many tries, I was unable to compile Openshift to make it work on ARM. So I decided to repernser this project to make it work on Intel type cards.
 
 ## Manual applications deployments
 
@@ -441,9 +389,6 @@ MySQL database server with persistent storage.
 
     kubectl --kubeconfig run/admin.conf create -f manual-deployments/mysql/mysql.yml
 
-### Other applications
-**TODO** 
-
 ## Other scripts
 ### Reboot your cluster
 If you need to reboot your cluster you can use this script, Ansible will take care of asking you to ask each Raspberry in your cluster to restart.
@@ -456,12 +401,6 @@ The operating system of raspberry pis supports very well a shutdown by power cut
 
     ansible pis -i hosts --become --args "/sbin/halt" --forks 4 --user pi
 
-## DevSecOps
-**TODO** 
-### What is this
-**TODO** 
-### How to do
-**TODO** 
 <!-- ROADMAP -->
 ## Roadmap
 
